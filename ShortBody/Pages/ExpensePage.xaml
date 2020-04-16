@@ -1,0 +1,171 @@
+﻿<UserControl x:Class="ShortBody.Pages.ExpensePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:an="clr-namespace:ShortBody.Resources.Helper_Methods"
+
+      xmlns:local="clr-namespace:ShortBody.Pages"
+            xmlns:ctr="clr-namespace:ShortBody.Resources.UserControls"
+              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+     xmlns:fa="http://schemas.fontawesome.io/icons/"
+      xmlns:cv="clr-namespace:ShortBody.ValueConverters"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="800"
+      >
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="7"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+
+        <Grid Grid.ColumnSpan="2" Margin="20,5,20,5" Height="40"
+                    Background="{DynamicResource MaterialDesignPaper}">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                        Margin="5,0,5,0"
+                        >
+                <TextBlock Text="SearchBy :" VerticalAlignment="Center"
+                           FontSize="17"/>
+                <ComboBox Width="150" VerticalAlignment="Center" Name="cboSearchBox"
+                          SelectionChanged="cboSearchBox_SelectionChanged"
+                          Text="{Binding SearchBy}" Margin="5,0,5,0">
+                    <ComboBox.Items>
+                        <ComboBoxItem Content="All"/>
+                        <ComboBoxItem Content="P-Voucher #"/>
+                    </ComboBox.Items>
+                </ComboBox>
+
+                <TextBox Name="txtSearchBox"  Width="150" Margin="10,0,5,0" Text="{Binding SearchString,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+
+                <Button  Style="{StaticResource BoderlessButton}"
+                         FontSize="17" Margin="5,0,5,0"
+                         Command="{Binding SearchExpenseCommand}">
+                    Search
+                </Button>
+            </StackPanel>
+        </Grid>
+
+
+
+        <ctr:miniWindow  Background="Transparent" HeaderText="All Expenses"
+                        Grid.Row="1" Grid.RowSpan="3" CanClose="False">
+
+            <ctr:miniWindow.Content>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="241*"/>
+                        <RowDefinition Height="10"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" 
+                        Background="{StaticResource myDirtyWhite}">
+                        <Button  Margin="5" ToolTip="Add New Expense"
+                    Style="{StaticResource b_Button}" Click="btnAddExpense_Click">
+                            <fa:ImageAwesome Icon="UserPlus" Width="20"/>
+                        </Button>
+                        <Rectangle Fill="White" Width="1" Margin="5,5,1,5"/>
+
+                        <Button  Margin="1,5,5,5" Style="{StaticResource b_Button}" Command="{Binding DeleteExpenseCommand}">
+                            <StackPanel Orientation="Horizontal" ToolTip="Delete Expense">
+                                <fa:ImageAwesome Icon="Trash" Width="20"/>
+
+                            </StackPanel>
+                        </Button>
+
+                        <Rectangle Fill="White" Width="1" Margin="5,5,1,5"/>
+
+                        <Button  Margin="1,5,5,5" Style="{StaticResource b_Button}" Click="ExpenseStatment_Click" Content="Expenses Statement" />
+
+                    </StackPanel>
+
+                    <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding AllExpenses,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" Foreground="Black"
+                              ColumnWidth="*"  Grid.Row="1" Grid.RowSpan="2" SelectionChanged="MainExpenseGrid_SelectionChanged" CanUserAddRows="False"
+          CanUserReorderColumns="True" CanUserResizeColumns="True" 
+          CanUserResizeRows="False" CanUserSortColumns="True" FontSize="13">
+                        <DataGrid.Columns>
+                            <md:MaterialDataGridTextColumn Header="PaymentVoucherNumber" Binding="{Binding PaymentVoucherNumber}"></md:MaterialDataGridTextColumn>
+                            <md:MaterialDataGridTextColumn Header="Date" Binding="{Binding Date,Converter={cv:DateFormatter}}"></md:MaterialDataGridTextColumn>
+                            <md:MaterialDataGridTextColumn Header="Description" Binding="{Binding Description}" ElementStyle="{StaticResource elementStyle}" EditingElementStyle="{StaticResource editingElementStyle}"></md:MaterialDataGridTextColumn>
+                            <md:MaterialDataGridTextColumn Header="Amount" Binding="{Binding Amount,Converter={cv:DToSConverter}}"></md:MaterialDataGridTextColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </ctr:miniWindow.Content>
+        </ctr:miniWindow>
+
+        <ctr:miniWindow Grid.Row="1" Grid.Column="1" HeaderText="Add Expense" 
+                        x:Name="AddExpenseWindow" Width="600" 
+                        Loaded="AddExpenseWindow_Loaded">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="241*"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" 
+                        Background="{StaticResource myDirtyWhite}">
+
+                    <Button  Margin="10,5,5,5" Style="{StaticResource b_Button}"
+                             ToolTip="Clear Boxes" Command="{Binding ClearBoxes}" CommandParameter="E">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="PaintBrush" Width="20" />
+
+                        </StackPanel>
+                    </Button>
+
+                    <Rectangle Fill="White" Width="1" Margin="5,5,1,5"/>
+
+
+                </StackPanel>
+
+                <Grid Grid.Row="1" Background="{DynamicResource MaterialDesignPaper}" DataContext="{Binding NewExpense}" Grid.RowSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource tb}" Grid.ColumnSpan="4" Text="{Binding Error,UpdateSourceTrigger=PropertyChanged}" Margin="5"
+                                   TextAlignment="Center" Foreground="#CA5100"
+                                   DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl},Mode=FindAncestor} ,Path=DataContext }"/>
+
+                    <StackPanel Margin="5" Grid.Row="1">
+                        <TextBlock Style="{StaticResource tb}" Text="Payment Voucher_No :" TextAlignment="Right" Margin="10" 
+                                   VerticalAlignment="Center" />
+                                            </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="5" Grid.Row="1">
+                        <TextBox Text="{Binding PaymentVoucherNumber}" Margin="5,10,5,10"/>
+
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Margin="5" Grid.Row="1">
+                        <TextBlock Style="{StaticResource tb}" Text="Description :" TextAlignment="Right" Margin="10" 
+                                   VerticalAlignment="Center" />
+                        <TextBlock Style="{StaticResource tb}" Text="Amount :" TextAlignment="Right" Margin="10" 
+                                   VerticalAlignment="Center" />
+
+
+                    </StackPanel>
+                    <StackPanel Grid.Column="3" Margin="5" Grid.Row="1">
+                        <TextBox Text="{Binding Description}"  Margin="5,10,5,10"/>
+                        <TextBox Text="{Binding Amount}" Margin="5,10,5,10"/>
+                        <Button Content="Save" DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctr:miniWindow},Mode=FindAncestor} ,Path=DataContext }"
+                                Command="{Binding SaveExpenseCommand}" Width="50"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </ctr:miniWindow>
+    </Grid>
+</UserControl>

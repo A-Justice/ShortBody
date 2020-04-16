@@ -1,0 +1,43 @@
+﻿<Window x:Class="ShortBody.Reports.InvoiceReport"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShortBody.Reports"
+                       xmlns:an="clr-namespace:ShortBody.Resources.Helper_Methods"
+        xmlns:rctr="clr-namespace:ShortBody.Resources.UserControls"
+        mc:Ignorable="d" WindowState="Maximized"
+              xmlns:cv="clr-namespace:ShortBody.ValueConverters"
+
+                    xmlns:fa="http://schemas.fontawesome.io/icons/"
+              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+ Icon="/ShortBody;component/Resources/Images/icon.ico"
+        Title="InvoiceReport" Height="600" Width="600">
+    <Grid>
+        <rctr:DocumentControl x:Name="DcInvoice" HasVat="True" What="Invoice"
+                               DataContext="{Binding SelectedCompany}" CompanyName="{Binding Name}" CompanySlogan="{Binding Slogan}" Logo="{Binding Logo,IsAsync=True,Converter={cv:ByteToImageConverter}}" >
+            <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Invoices,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Foreground="Black"
+                           AlternatingRowBackground="{StaticResource Smoke}" AlternationCount="2"
+                        Grid.Row="1"  Background="White"  DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window},Mode=FindAncestor} ,Path=DataContext }"
+          CanUserReorderColumns="True" CanUserResizeColumns="True" 
+          CanUserResizeRows="False" CanUserSortColumns="True" FontSize="13">
+                <DataGrid.Columns>
+                    <md:MaterialDataGridTextColumn Header="Invoice N0" Binding="{Binding Invoice_No}"></md:MaterialDataGridTextColumn>
+                    <md:MaterialDataGridTextColumn Header="Date" Binding="{Binding Date,Converter={cv:DateFormatter}}"></md:MaterialDataGridTextColumn>
+                    <md:MaterialDataGridTextColumn Header="PurchaseOrder No" Binding="{Binding PurchaseOrder_No}"></md:MaterialDataGridTextColumn>
+                    <md:MaterialDataGridTextColumn Header="ProjectSite" Binding="{Binding ProjectSite}"></md:MaterialDataGridTextColumn>
+                    <md:MaterialDataGridTextColumn Header="Waybill No Number" Binding="{Binding WayBill_No}"></md:MaterialDataGridTextColumn>
+                    <md:MaterialDataGridTextColumn Header="Description" Binding="{Binding Description}" ElementStyle="{StaticResource elementStyle}" EditingElementStyle="{StaticResource editingElementStyle}"></md:MaterialDataGridTextColumn>
+                    <md:MaterialDataGridTextColumn Header="Amount" Binding="{Binding Amount,Converter={cv:DToSConverter}}"></md:MaterialDataGridTextColumn>
+                    <md:MaterialDataGridTextColumn Header="Vat+Nhil %" Binding="{Binding Vat_Nhil}"></md:MaterialDataGridTextColumn>
+                    <md:MaterialDataGridTextColumn Header="Vat Value" Binding="{Binding VatValue,Converter={cv:DToSConverter}}"></md:MaterialDataGridTextColumn>
+                    <md:MaterialDataGridTextColumn Header="Total Amount" Binding="{Binding TotalAmount,Converter={cv:DToSConverter}}"></md:MaterialDataGridTextColumn>
+                    <md:MaterialDataGridTextColumn Header="Remarks" Binding="{Binding Remarks}"></md:MaterialDataGridTextColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </rctr:DocumentControl>
+    </Grid>
+
+    
+</Window>

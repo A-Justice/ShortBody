@@ -1,0 +1,34 @@
+﻿<Window x:Class="ShortBody.Reports.ExpenseReport"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShortBody.Reports"
+                      xmlns:an="clr-namespace:ShortBody.Resources.Helper_Methods"
+        xmlns:rctr="clr-namespace:ShortBody.Resources.UserControls"
+        mc:Ignorable="d" WindowState="Maximized"
+              xmlns:cv="clr-namespace:ShortBody.ValueConverters"
+                    xmlns:fa="http://schemas.fontawesome.io/icons/"
+              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+            
+        Title="Expense Statement" Height="600" Width="600" Icon="/ShortBody;component/Resources/Images/icon.ico">
+    <Grid>
+        <rctr:DocumentControl x:Name="DcExpenses" What="Expense"  Who="All Expenses" DataContext="{Binding SelectedCompany}" CompanyName="{Binding Name}" CompanySlogan="{Binding Slogan}" Logo="{Binding Logo,IsAsync=True,Converter={cv:ByteToImageConverter}}">
+            <DataGrid ItemsSource="{Binding AllExpenses,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Foreground="Black"
+                      AlternatingRowBackground="{StaticResource Smoke}" AlternationCount="2"
+                     ColumnWidth="*"    AutoGenerateColumns="False"     Grid.Row="1"  Background="White"  DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window},Mode=FindAncestor} ,Path=DataContext }"
+          CanUserReorderColumns="True" CanUserResizeColumns="True" 
+          CanUserResizeRows="False" CanUserSortColumns="True" FontSize="13">
+                <DataGrid.Columns>
+                    <md:MaterialDataGridTextColumn Header="PaymentVoucherNumber" Binding="{Binding PaymentVoucherNumber}"></md:MaterialDataGridTextColumn>
+                    <md:MaterialDataGridTextColumn Header="Date" Binding="{Binding Date,Converter={cv:DateFormatter}}"></md:MaterialDataGridTextColumn>
+                    <md:MaterialDataGridTextColumn Header="Description" Binding="{Binding Description}" ElementStyle="{StaticResource elementStyle}" EditingElementStyle="{StaticResource editingElementStyle}"></md:MaterialDataGridTextColumn>
+                    <md:MaterialDataGridTextColumn Header="Amount" Binding="{Binding Amount,Converter={cv:DToSConverter}}"></md:MaterialDataGridTextColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </rctr:DocumentControl>
+    </Grid>
+
+
+</Window>

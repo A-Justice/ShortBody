@@ -1,0 +1,31 @@
+﻿<Window x:Class="ShortBody.reportViewer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShortBody"
+        mc:Ignorable="d"
+                xmlns:rctr="clr-namespace:ShortBody.Resources.UserControls"
+
+        Title="reportViewer" Height="600" Width="1000">
+    <!--<Grid>
+        <rctr:DocumentControl>
+            <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window},Mode=FindAncestor} ,Path=DataContext }">
+                <DataGrid  ItemsSource="{Binding AllIncomes,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" Foreground="Black"
+                               
+                                           CanUserReorderColumns="True" CanUserResizeColumns="True" 
+          CanUserResizeRows="False" CanUserSortColumns="True" FontSize="13">
+
+                </DataGrid>
+            </Grid>
+        </rctr:DocumentControl>
+        --><!--<FlowDocumentPageViewer HorizontalAlignment="Center" VerticalAlignment="Center" >
+            <FlowDocument TextAlignment="Center"  ColumnWidth="900" IsColumnWidthFlexible="True" >
+                <BlockUIContainer>
+                   
+                </BlockUIContainer>
+             
+            </FlowDocument>
+        </FlowDocumentPageViewer>--><!--
+    </Grid>-->
+</Window>

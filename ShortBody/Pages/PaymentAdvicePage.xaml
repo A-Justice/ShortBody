@@ -1,0 +1,189 @@
+﻿<Page x:Class="ShortBody.Pages.PaymentAdvicePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ShortBody.Pages"
+      mc:Ignorable="d" 
+       xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+         xmlns:fa="http://schemas.fontawesome.io/icons/"
+      xmlns:ctr="clr-namespace:ShortBody.Resources.UserControls"
+       xmlns:an="clr-namespace:ShortBody.Resources.Helper_Methods"
+      xmlns:cv="clr-namespace:ShortBody.ValueConverters"
+    
+      d:DesignHeight="800" d:DesignWidth="1200"
+      Title="PaymentAdvicePage">
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="7"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.ColumnSpan="2" Margin="20,5,20,5" Height="40"
+                    Background="{DynamicResource MaterialDesignPaper}">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                        Margin="5,0,5,0"
+                        >
+                <TextBlock Text="SearchBy :" VerticalAlignment="Center"
+                           FontSize="17"/>
+                <ComboBox Name="cboSearchBox" SelectionChanged="cboSearchBox_SelectionChanged" Width="150" VerticalAlignment="Center"
+                          Text="{Binding SearchBy}" Margin="5,0,5,0">
+                    <ComboBox.Items>
+                        <ComboBoxItem Content="All"/>
+                        <ComboBoxItem Content="Company Name"/>
+                        <ComboBoxItem Content="Cheque #"/>
+                    </ComboBox.Items>
+                </ComboBox>
+
+                <TextBox Name="txtSearchBox"  Width="150" Margin="10,0,5,0" Text="{Binding SearchString,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+
+                <Button  Style="{StaticResource BoderlessButton}"
+                         FontSize="17" Margin="5,0,5,0"
+                         Command="{Binding SearchPaymentAdviceCommand}">
+                    Search
+                </Button>
+            </StackPanel>
+        </Grid>
+
+
+        <ctr:miniWindow  Background="Transparent" HeaderText="Payment Ad"
+                        Grid.Row="1" Grid.RowSpan="3" CanClose="False">
+
+            <ctr:miniWindow.Content>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="241*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" 
+                        Background="{StaticResource myDirtyWhite}">
+                        <Button  Margin="5" ToolTip="Add New Payment Advice" 
+                    Style="{StaticResource b_Button}" 
+                                 Click="btnAddPaymentAdvice_Click"  Command="{Binding AddPaCommand}">
+                            Add Payment Advice
+                        </Button>
+                        <Rectangle Fill="White" Width="1" Margin="5,5,5,5"/>
+
+                        <Button  Margin="1,5,5,5" Style="{StaticResource b_Button}" 
+                                 Content="Delete Payment Advice" 
+                                 Command="{Binding DeletePaCommand}"/>
+
+                        <Button  Margin="1,5,5,5" Style="{StaticResource b_Button}"
+                                
+                                 Click="btnViewPaymentAdvice_Click"
+                                 Content="View Payment Advice"
+                                 Command="{Binding ViewPaCommand}"/>
+
+
+
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="1"  AutoGenerateColumns="False" ColumnWidth="*"
+                                          CanUserAddRows="False" ItemsSource="{Binding PaymentAdvices}"
+                                           ColumnHeaderStyle="{StaticResource defaultHeaderStyle}"
+                                          SelectionChanged="PaymentAdviceGrid_SelectionChanged"
+                              PreviewMouseWheel="DataGrid_PreviewMouseWheel">
+                        <DataGrid.Columns>
+                            <md:MaterialDataGridTextColumn Header="Date" Binding="{Binding Date,Converter={cv:DateFormatter}}"></md:MaterialDataGridTextColumn>
+                            <md:MaterialDataGridTextColumn Header="ChequeNumber" Binding="{Binding ChequeNumber}"></md:MaterialDataGridTextColumn>
+                            <md:MaterialDataGridTextColumn Header="CompanyName" Binding="{Binding CompanyName}"></md:MaterialDataGridTextColumn>
+                            <md:MaterialDataGridTextColumn Header="BankName" Binding="{Binding BankName}"></md:MaterialDataGridTextColumn>
+                            <md:MaterialDataGridTextColumn Header="Vat Rate" Binding="{Binding VatRate}"></md:MaterialDataGridTextColumn>
+                            <md:MaterialDataGridTextColumn Header="Vat Value" Binding="{Binding VatValue,Converter={cv:DToSConverter}}"></md:MaterialDataGridTextColumn>
+                            <md:MaterialDataGridTextColumn Header="TotalAmount" Binding="{Binding TotalAmount,Converter={cv:DToSConverter}}"></md:MaterialDataGridTextColumn>
+                            <md:MaterialDataGridTextColumn Header="IssuedBy" Binding="{Binding IssuedBy,Converter={cv:DToSConverter}}"></md:MaterialDataGridTextColumn>
+
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+                </Grid>
+            </ctr:miniWindow.Content>
+        </ctr:miniWindow>
+
+        <ctr:miniWindow Grid.Row="1" Grid.Column="1" HeaderText="Add Payment Advice" 
+                        x:Name="AddPaymentAdvice" Width="600" Height="300"
+                        Loaded="AddPaymentAdvice_Loaded"
+                        >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="241*"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" 
+                        Background="{StaticResource myDirtyWhite}">
+
+                    <Button  Margin="10,5,5,5" Style="{StaticResource b_Button}"
+                             ToolTip="Clear Boxes" Command="{Binding ClearBoxes}"
+                             CommandParameter="CPA">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="PaintBrush" Width="20" />
+
+                        </StackPanel>
+                    </Button>
+
+                    <Rectangle Fill="White" Width="1" Margin="5,5,1,5"/>
+
+
+                </StackPanel>
+
+                <Grid Grid.Row="1" Grid.RowSpan="2" Background="{DynamicResource MaterialDesignPaper}"
+                      DataContext="{Binding NewPaymentAdvice}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="8*"/>
+                        <RowDefinition Height="55*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Style="{StaticResource tb}" Text="{Binding Error,UpdateSourceTrigger=PropertyChanged}" Margin="5"
+                                   TextAlignment="Center" Foreground="#CA5100" Grid.ColumnSpan="4"
+                                   DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl},Mode=FindAncestor} ,Path=DataContext }"/>
+
+
+                    <StackPanel Margin="5" Grid.Row="1">
+                        <TextBlock Style="{StaticResource tb}" Text="Bank :" TextAlignment="Right" Margin="10" 
+                                   VerticalAlignment="Center" />
+                        <TextBlock Style="{StaticResource tb}" Text="Cheque Number :" TextAlignment="Right" Margin="10" 
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="5" Grid.Row="1">
+                        <TextBox Text="{Binding BankName}"  Margin="5,10,5,10"/>
+                        <TextBox Text="{Binding ChequeNumber}"  Margin="5,10,5,10"/>
+
+
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Margin="5" Grid.Row="1">
+                        <TextBlock Style="{StaticResource tb}" Text="Client Name :" TextAlignment="Right" Margin="10" 
+                                   VerticalAlignment="Center" />
+                        <TextBlock Style="{StaticResource tb}" Text="Vat_Nhil :" TextAlignment="Right" Margin="10" 
+                                   VerticalAlignment="Center" />
+
+
+                    </StackPanel>
+                    <StackPanel Grid.Column="3" Margin="5" Grid.Row="1">
+                        <TextBox Text="{Binding CompanyName,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                 Margin="5,10,5,10"/>
+                        <TextBox Text="{Binding VatRate}"  Margin="5,10,5,10"/>
+
+                        <Button Content="Save" DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctr:miniWindow},Mode=FindAncestor} ,Path=DataContext }"
+                                Command="{Binding SavePaymentAdviceCommand}" Width="50"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+
+        </ctr:miniWindow>
+    </Grid>
+</Page>
